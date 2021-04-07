@@ -1,0 +1,6 @@
+{
+    "name": "Add in-review label per PR",
+    "description": "On each PR review request, add the in-review label. This is used by the stale in-review action. Required for the in-review-stale label.",
+    "iconName": "libopenstorage"
+}
+

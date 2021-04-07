@@ -1,0 +1,6 @@
+{
+    "name": "Add area and size labels to PRs",
+    "description": "Adds a size and area label per PR",
+    "iconName": "libopenstorage"
+}
+
