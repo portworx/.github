@@ -1,0 +1,12 @@
+{
+    "name": "Run GoReleaser with DockerHub login.",
+    "description": "Workflow for triggering GoReleaser (goreleaser.com) on tags vX.Y.Z and providing DockerHub login for pushing resulting images",
+    "iconName": "goreleaser",
+    "categories": [
+        "Go"
+    ],
+    "filePatterns": [
+        ".goreleaser.yml$"
+    ]
+}
+
