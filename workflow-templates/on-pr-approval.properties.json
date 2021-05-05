@@ -1,0 +1,6 @@
+{
+    "name": "PR approval metadata cleanup",
+    "description": "Removes stale label and adds approved label",
+    "iconName": "libopenstorage"
+}
+
