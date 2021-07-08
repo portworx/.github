@@ -1,0 +1,5 @@
+{
+    "name": "Create empty PRs to bump semantic version tags",
+    "description": "Workflow which simplifies creating empty PRs which serve as a proposal to increase the version tags. It is intended for use alongside another workflow that consumes bump labels (e.g. action-bumpr) and triggers a release action (e.g. GoReleaser).",
+    "iconName": "libopenstorage"
+}

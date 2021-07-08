@@ -1,0 +1,60 @@
+# This workflow adds a manually triggered workflow under the 'Actions' tab.
+# The workflow creates an empty pull request with a 'bump:$version' label,
+# which can be consumed in other workflows that react to merged PRs with the expected labels.
+
+name: Propose version bump
+on: 
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version to bump [major|minor|patch]'     
+        required: true
+        default: 'patch'
+
+jobs:
+  create-bump-pr:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Generate branch name
+      run: |
+        LATEST_TAG=$(git describe --tags --match 'v[0-9]*' --abbrev=0)
+        echo BRANCH_NAME=bump-${{ github.event.inputs.bump }}-version-from-${LATEST_TAG} >> $GITHUB_ENV
+    - name: Create proposal branch
+      uses: peterjgrainger/action-create-branch@v2.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        branch: ${{ env.BRANCH_NAME }}
+
+    - name: Check out proposal branch
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ env.BRANCH_NAME }}
+
+    - name: Add empty commit
+      run: |
+        git config --global user.email "${{ github.actor }}@purestorage.com"
+        git config --global user.name ${{ github.actor }}
+        git commit --allow-empty -m "Bump ${{ github.event.inputs.bump }} version"
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ env.BRANCH_NAME }}
+
+    - name: Create pull request
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: ${{ env.BRANCH_NAME }}
+        destination_branch: $default-branch
+        pr_title: "Bump ${{ github.event.inputs.bump }} version of ${{ github.repository }}"
+        pr_body: "Bump the **${{ github.event.inputs.bump }}** version"
+        pr_label: "bump:${{ github.event.inputs.bump }}"
+        pr_allow_empty: true
+        github_token: ${{ secrets.GITHUB_TOKEN }}
