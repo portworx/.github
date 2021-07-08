@@ -1,0 +1,12 @@
+{
+    "name": "Bump tags and release based on labeled PRs",
+    "description": "Workflow which consumes merged PRs with specific labels (bump:$version), pushes new tags accordingly, and runs GoReleaser if tags were updated.",
+    "iconName": "libopenstorage",
+    "categories": [
+        "Go"
+    ],
+    "filePatterns": [
+        ".goreleaser.yml$"
+    ]
+}
+
